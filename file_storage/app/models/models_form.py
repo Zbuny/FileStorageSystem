@@ -4,7 +4,8 @@ from wtforms.validators import InputRequired, Length, EqualTo
 from flask_login import UserMixin
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-from app import db, login_manager
+from app.extensions import db, login_manager
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
