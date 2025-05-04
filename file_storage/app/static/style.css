@@ -161,3 +161,58 @@ tr:hover {
 .btn-group form {
     margin: 0;
 }
+@media screen and (min-width: 1200px) {
+    .container {
+        max-width: 1200px;
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+    .container {
+        max-width: 960px;
+    }
+
+    header, footer {
+        padding: 15px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .container {
+        max-width: 720px;
+    }
+
+    header, footer {
+        padding: 15px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    body {
+        font-size: 14px;
+    }
+
+    header, footer {
+        padding: 10px;
+    }
+
+    .container {
+        max-width: 100%;
+        padding: 10px;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    body {
+        font-size: 12px;
+    }
+
+    header, footer {
+        font-size: 14px;
+    }
+
+    .container {
+        max-width: 100%;
+        padding: 8px;
+    }
+}

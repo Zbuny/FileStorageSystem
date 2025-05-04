@@ -1,11 +1,9 @@
+import sys
+import os
 from app import create_app
-from datetime import datetime
-
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 app = create_app()
-@app.context_processor
-def inject_now():
-    return {'current_year': datetime.now().year}
 
 if __name__ == '__main__':
     app.run(debug=True)

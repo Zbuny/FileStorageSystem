@@ -2,58 +2,58 @@
 
 {% block content %}
 
-    <h1>Dashboard</h1>
-    <div class="d-flex justify-content-between mb-3">
-        <div>
-            <h3>Upload New File</h3>
-            <form method="POST" enctype="multipart/form-data">
-                {{ form.hidden_tag() }}
-                <div>
-                    {{ form.file.label }}
-                    {{ form.file() }}
-                </div>
-                <div>
-                    <button type="submit" class="btn btn-success">Upload</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <hr>
-    <div class="d-flex justify-content-between align-items-center">
-        <h3>Your Files</h3>
-        <form method="GET" action="{{ url_for('dashboard') }}" class="d-flex">
-            <input type="text" name="search" placeholder="Search files" class="form-control" style="width: 250px;" value="{{ search_query }}">
+<h1>Dashboard</h1>
+<div class="d-flex justify-content-between mb-3">
+    <div>
+        <h3>Upload New File</h3>
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div>
+                {{ form.file.label }}
+                {{ form.file() }}
+            </div>
+            <div>
+                <button type="submit" class="btn btn-success">Upload</button>
+            </div>
         </form>
     </div>
+</div>
 
-    <table class="table mt-3">
-        <thead>
+<hr>
+<div class="d-flex justify-content-between align-items-center">
+    <h3>Your Files</h3>
+    <form method="GET" action="{{ url_for('files.dashboard') }}" class="d-flex">
+        <input type="text" name="search" placeholder="Search files" class="form-control" style="width: 250px;" value="{{ search_query }}">
+    </form>
+</div>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>Filename</th>
+            <th>Size</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for file in files %}
             <tr>
-                <th>Filename</th>
-                <th>Size</th>
-                <th>Actions</th>
+                <td>
+                    <a href="{{ url_for('files.view_file', file_id=file.id) }}">{{ file.filename }}</a>
+                </td>
+                <td>{{ file.size }} bytes</td>
+                <td class="action-buttons">
+                    <div class="btn-group">
+                        <a href="{{ url_for('files.download_file', file_id=file.id) }}" class="btn btn-primary">Download</a>
+                        <a href="{{ url_for('files.update_file', file_id=file.id) }}" class="btn btn-warning">Update</a>
+                        <form action="{{ url_for('files.delete_file', file_id=file.id) }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            {% for file in files %}
-                <tr>
-                    <td>
-                         <a href="{{ url_for('view_file', file_id=file.id) }}">{{ file.filename }}</a>
-                        </td>
-                    <td>{{ file.size }} bytes</td>
-                    <td class="action-buttons">
-                        <div class="btn-group">
-                            <a href="{{ url_for('download_file', file_id=file.id) }}" class="btn btn-primary">Download</a>
-                            <a href="{{ url_for('update_file', file_id=file.id) }}" class="btn btn-warning">Update</a>
-                            <form action="{{ url_for('delete_file', file_id=file.id) }}" method="post" style="display:inline;">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}

@@ -12,10 +12,13 @@ def create_app():
 
     db.init_app(app)
     login_manager.init_app(app)
-    login_manager.login_view = 'login'
+    login_manager.login_view = 'auth.login'
 
     with app.app_context():
-        from app import views
+        from app.auth.views import auth_bp
+        from app.files.views import files_bp
+        app.register_blueprint(auth_bp)
+        app.register_blueprint(files_bp)
         db.create_all()
 
     return app
