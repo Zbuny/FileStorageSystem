@@ -65,6 +65,8 @@ def logout():
 @login_required
 def dashboard():
     form = UploadForm()
+    search_query = request.args.get('search', '').strip()
+
     if form.validate_on_submit() and 'file' in request.files:
         file = request.files['file']
         if file and allowed_file(file.filename):
@@ -78,8 +80,17 @@ def dashboard():
             return redirect(url_for('dashboard'))
         else:
             flash("Invalid file type")
-    files = File.query.filter_by(user_id=current_user.id).all()
-    return render_template('dashboard.html', form=form, files=files)
+
+    if search_query:
+        files = File.query.filter(
+            File.user_id == current_user.id,
+            File.filename.ilike(f"%{search_query}%")
+        ).all()
+    else:
+        files = File.query.filter_by(user_id=current_user.id).all()
+
+    return render_template('dashboard.html', form=form, files=files, search_query=search_query)
+
 
 @app.route('/update/<int:file_id>', methods=['GET', 'POST'])
 @login_required
@@ -154,3 +165,17 @@ def download_file(file_id):
         return redirect(url_for('dashboard'))
 
     return send_from_directory(Config.UPLOAD_FOLDER, file.filename, as_attachment=True)
+
+@app.route('/view/<int:file_id>')
+@login_required
+def view_file(file_id):
+    file = File.query.get_or_404(file_id)
+    if file.user_id != current_user.id:
+        flash("You do not have permission to view this file.")
+        return redirect(url_for('dashboard'))
+
+    try:
+        return send_from_directory(Config.UPLOAD_FOLDER, file.filename)
+    except FileNotFoundError:
+        flash("File not found.")
+        return redirect(url_for('dashboard'))

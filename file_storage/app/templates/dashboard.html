@@ -1,24 +1,33 @@
-
 {% extends 'base.html' %}
 
 {% block content %}
+
     <h1>Dashboard</h1>
-    <h3>Upload New File</h3>
-    <form method="POST" enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
+    <div class="d-flex justify-content-between mb-3">
         <div>
-            {{ form.file.label }}
-            {{ form.file() }}
+            <h3>Upload New File</h3>
+            <form method="POST" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <div>
+                    {{ form.file.label }}
+                    {{ form.file() }}
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-success">Upload</button>
+                </div>
+            </form>
         </div>
-        <div>
-            <button type="submit" class="btn btn-success">Upload</button>
-        </div>
-    </form>
+    </div>
 
     <hr>
+    <div class="d-flex justify-content-between align-items-center">
+        <h3>Your Files</h3>
+        <form method="GET" action="{{ url_for('dashboard') }}" class="d-flex">
+            <input type="text" name="search" placeholder="Search files" class="form-control" style="width: 250px;" value="{{ search_query }}">
+        </form>
+    </div>
 
-    <h3>Your Files</h3>
-    <table class="table">
+    <table class="table mt-3">
         <thead>
             <tr>
                 <th>Filename</th>
@@ -29,20 +38,22 @@
         <tbody>
             {% for file in files %}
                 <tr>
-                    <td>{{ file.filename }}</td>
-                    <td>{{ file.size }} bytes</td>
                     <td>
-             <td class="action-buttons">
-    <div class="btn-group">
-        <a href="{{ url_for('download_file', file_id=file.id) }}" class="btn">Download</a>
-        <a href="{{ url_for('update_file', file_id=file.id) }}" class="btn">Update</a>
-        <form action="{{ url_for('delete_file', file_id=file.id) }}" method="post">
-            <button type="submit" class="btn">Delete</button>
-        </form>
-    </div>
-</td>
-    </tr>
+                         <a href="{{ url_for('view_file', file_id=file.id) }}">{{ file.filename }}</a>
+                        </td>
+                    <td>{{ file.size }} bytes</td>
+                    <td class="action-buttons">
+                        <div class="btn-group">
+                            <a href="{{ url_for('download_file', file_id=file.id) }}" class="btn btn-primary">Download</a>
+                            <a href="{{ url_for('update_file', file_id=file.id) }}" class="btn btn-warning">Update</a>
+                            <form action="{{ url_for('delete_file', file_id=file.id) }}" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
+
 {% endblock %}
