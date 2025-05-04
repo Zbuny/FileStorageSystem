@@ -1,0 +1,29 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Update File: {{ file.filename }}</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div>
+            <label for="new_filename">New Filename (optional):</label>
+            <input type="text" name="new_filename" class="form-control" placeholder="Enter new filename" />
+        </div>
+        <div>
+            {{ form.file.label }}
+            {{ form.file() }}
+        </div>
+        <div>
+            <button type="submit" class="btn btn-warning">Update File</button>
+        </div>
+    </form>
+
+    <hr>
+    <h3>Current File Details:</h3>
+    <ul>
+        <li>Filename: {{ file.filename }}</li>
+        <li>Size: {{ file.size }} bytes</li>
+        <li>Uploaded on: {{ file.timestamp }}</li>
+    </ul>
+{% endblock %}

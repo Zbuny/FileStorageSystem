@@ -1,0 +1,48 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Dashboard</h1>
+    <h3>Upload New File</h3>
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.file.label }}
+            {{ form.file() }}
+        </div>
+        <div>
+            <button type="submit" class="btn btn-success">Upload</button>
+        </div>
+    </form>
+
+    <hr>
+
+    <h3>Your Files</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Filename</th>
+                <th>Size</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in files %}
+                <tr>
+                    <td>{{ file.filename }}</td>
+                    <td>{{ file.size }} bytes</td>
+                    <td>
+             <td class="action-buttons">
+    <div class="btn-group">
+        <a href="{{ url_for('download_file', file_id=file.id) }}" class="btn">Download</a>
+        <a href="{{ url_for('update_file', file_id=file.id) }}" class="btn">Update</a>
+        <form action="{{ url_for('delete_file', file_id=file.id) }}" method="post">
+            <button type="submit" class="btn">Delete</button>
+        </form>
+    </div>
+</td>
+    </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
