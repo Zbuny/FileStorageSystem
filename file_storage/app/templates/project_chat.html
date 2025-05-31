@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    body {
+        background: #f7f7f7;
+        margin: 0;
+        padding-bottom: 160px;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .chat-container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .chat-history {
+        margin-bottom: 100px;
+    }
+
+    .chat-entry {
+        margin-bottom: 20px;
+        padding: 15px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .chat-entry strong {
+        display: block;
+        margin-bottom: 5px;
+        color: #0d6efd;
+    }
+
+    .chat-form-inner-floating {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 25px;
+        background: transparent;
+        z-index: 999;
+        display: flex;
+        justify-content: center;
+    }
+
+    .floating-box {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        width: 100%;
+        max-width: 800px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        border: 1px solid #e0e0e0;
+    }
+
+    textarea, select {
+        font-size: 16px;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        width: 100%;
+        resize: none;
+    }
+
+    button {
+        background: #0d6efd;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        border: none;
+        padding: 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #084298;
+    }
+
+    .clear-chat {
+        margin-top: 20px;
+        text-align: right;
+    }
+
+    .clear-chat form {
+        display: inline;
+    }
+
+    .clear-chat button {
+        background: none;
+        border: none;
+        color: #0d6efd;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .clear-chat button:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="chat-container">
+    <div class="chat-history" id="chat-box">
+        {% for msg in chat_history %}
+            <div class="chat-entry">
+                <strong>You:</strong>
+                <p>{{ msg.question }}</p>
+                <strong>Bot:</strong>
+                <p><span class="chat-answer" data-answer="{{ msg.answer|e }}"></span></p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="clear-chat">
+        <form method="POST">
+            <input type="hidden" name="clear_chat" value="1">
+            <button type="submit">🗑 Очистить чат</button>
+        </form>
+    </div>
+</div>
+
+<form method="POST" class="chat-form">
+    <div class="chat-form-inner-floating">
+        <div class="floating-box">
+            <select name="selected_file">
+                <option value="">🗂️ All files</option>
+                {% for filename in files %}
+                    <option value="{{ filename }}" {% if filename == selected_file %}selected{% endif %}>{{ filename }}</option>
+                {% endfor %}
+            </select>
+            <textarea name="question" rows="2" placeholder="Ask anything..." required></textarea>
+            <button type="submit">Ask</button>
+        </div>
+    </div>
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const answers = document.querySelectorAll(".chat-answer");
+    answers.forEach(el => {
+        const fullText = el.dataset.answer;
+        el.textContent = "";
+        let i = 0;
+        const typeInterval = setInterval(() => {
+            if (i < fullText.length) {
+                el.textContent += fullText.charAt(i);
+                i++;
+            } else {
+                clearInterval(typeInterval);
+            }
+        }, 12);
+    });
+});
+</script>
+{% endblock %}
