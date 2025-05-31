@@ -216,3 +216,52 @@ tr:hover {
         padding: 8px;
     }
 }
+.chat-form-inner-floating {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 25px;
+    background: transparent;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+}
+
+.floating-box {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid #e0e0e0;
+}
+
+textarea, select {
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 100%;
+    resize: none;
+}
+
+button {
+    background: #0d6efd;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #084298;
+}

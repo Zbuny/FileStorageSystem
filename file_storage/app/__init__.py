@@ -15,7 +15,8 @@ def create_app():
         from app.files.views import files_bp
         from app.main import main
         from app.models.models_form import User
-
+        from app.chat.views import chat_bp
+        app.register_blueprint(chat_bp)
         app.register_blueprint(auth_bp)
         app.register_blueprint(files_bp)
         app.register_blueprint(main)

@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>Your Files</h1>
-    <table>
+    <table border="1" cellpadding="8" cellspacing="0">
         <thead>
             <tr>
                 <th>Filename</th>
@@ -17,9 +17,14 @@
                     <td>{{ file.size }} bytes</td>
                     <td>
                         <a href="{{ url_for('files.download_file', file_id=file.id) }}">Download</a>
+
                         <form action="{{ url_for('files.delete_file', file_id=file.id) }}" method="post" style="display:inline;">
                             <button type="submit">Delete</button>
                         </form>
+
+                        <a href="{{ url_for('chat.chat', filename=file.filename) }}" style="margin-left: 10px;">
+                            💬 Chat
+                        </a>
                     </td>
                 </tr>
             {% endfor %}
